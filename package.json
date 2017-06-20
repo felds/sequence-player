@@ -9,6 +9,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-env": "^1.5.2",
     "css-loader": "^0.28.4",
+    "eases": "^1.0.8",
     "expect": "^1.20.2",
     "promise-polyfill": "^6.0.2",
     "str-expand": "^1.0.2",
