@@ -1,8 +1,9 @@
 import { normalize } from './utils/math'
 
 export default class InteractionManager {
-    constructor (player) {
-        this.player = player
+    constructor (player, loopingFrame = 0) {
+        this.player         = player
+        this.loopingFrame   = loopingFrame
 
         this.init()
     }
@@ -34,6 +35,10 @@ export default class InteractionManager {
         this.player.el.removeEventListener('touchcancel', this._handleTouchEnd)
     }
 
+    get sensitivity() {
+        // @XXX but why?!
+        return 200 / this.player.el.offsetWidth
+    }
 
     _startDrag(pos) {
         this.isDragging = true
@@ -46,9 +51,10 @@ export default class InteractionManager {
         // @TODO check if its animating
         if (!this.isDragging) return
         
-        const targetFrame = this._startFrame - (pos - this._startPos)
+        const playerFrames = this.player.length
+        const targetFrame = this._startFrame - Math.floor((pos - this._startPos) * this.sensitivity)
         
-        this.player.currentFrame = normalize(225, targetFrame - 75) + 75
+        this.player.currentFrame = normalize(playerFrames - this.loopingFrame, targetFrame - this.loopingFrame) + this.loopingFrame
     }
     
     _stopDrag() {

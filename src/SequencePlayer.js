@@ -18,7 +18,7 @@ export default class SequencePlayer {
         this._setupDOM()
 
         this.animationManager = new AnimationManager(this)
-        this.InteractionManager = new InteractionManager(this)
+        this.InteractionManager = new InteractionManager(this, this._options.loopingFrame)
     }
 
     get defaultOptions() {
@@ -26,11 +26,16 @@ export default class SequencePlayer {
             aspectRatio: 1,
             imagesLoadedCallback: undefined,
             imagesFailedLoadingCallback: undefined,
+            loopingFrame: 0,
         }
     }
 
     get currentFrame() {
         return this._currentFrame
+    }
+
+    get length() {
+        return this._images.length
     }
 
     set currentFrame(n) {
@@ -82,7 +87,7 @@ export default class SequencePlayer {
             })
     }
 
-    animateTo(n, duration = 1000) {
-        this.animationManager.animateTo(n, duration)
+    animateTo(n, duration, easing) {
+        this.animationManager.animateTo(n, duration, easing)
     }
 }
