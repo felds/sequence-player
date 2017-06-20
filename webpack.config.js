@@ -18,5 +18,12 @@ module.exports = {
                 use:        [ 'style-loader', 'css-loader' ],
             },
         ]
-    }
+    },
+    devServer: {
+        inline: true,
+        overlay: true,
+        port: 9000,
+        publicPath: "/dist",
+        open: true,
+    },
 };
