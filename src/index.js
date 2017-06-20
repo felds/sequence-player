@@ -8,10 +8,13 @@ class SequencePlayer {
     constructor (el, range, options) {
         this._el = el
         this._options = Object.assign({}, this.defaultOptions, options)
-
-        this.range = range
+        this._currentFrame = 0
+        this._isAnimating = false
+        this._images = []
 
         this._setupDOM()
+
+        this.range = range
     }
 
     get defaultOptions() {
@@ -20,6 +23,10 @@ class SequencePlayer {
             imagesLoadedCallback: undefined,
             imagesFailedLoadingCallback: undefined,
         }
+    }
+
+    get currentFrame() {
+        return this._currentFrame
     }
 
     set range(range) {
@@ -40,6 +47,9 @@ class SequencePlayer {
     _loadImages(images) {
         Promise.all(images.map(f => fetch(f)))
             .then(success => {
+                this._images = success.map(response => response.url)
+                this.goToFrame(0)
+
                 console.log('finished loading', typeof this._options.imagesLoadedCallback)
                 if (typeof this._options.imagesLoadedCallback === 'function') {
                     this._options.imagesLoadedCallback(this)
@@ -52,6 +62,15 @@ class SequencePlayer {
             })
     }
 
+    goToFrame(n) {
+        // validate if frame exists
+        if (this._images[n] === undefined)
+            throw `Invalid frame “${n}”`
+        
+        this._currentFrame = n
+        console.log("frame", this._images[n])
+        this._imageContainer.style.backgroundImage = `url(${this._images[n]})`
+    }
 }
 
 window.SequencePlayer = SequencePlayer
