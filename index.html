@@ -18,15 +18,11 @@
 
     <script src="dist/bundle.js"></script>
     <script>
-        var sp = new SequencePlayer(seq1, "static/images/[0..4].jpg", {
+        console.log('carregando imagens')
+        var sp = new SequencePlayer(seq1, "static/images/img-[1..152].jpg", {
             aspectRatio: 16/9,
+            imagesLoadedCallback: _ => console.log("imagens carregadas"),
         })
-        
-
-        // regex: 600 - 6~8ms
-        // regex: 10000 - 133~300ms
-
-        // slice: 10000 - 300ms
     </script>
 </body>
 
