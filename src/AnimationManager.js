@@ -4,11 +4,19 @@ import { map } from './utils/math'
 export default class AnimationManager {
     constructor(player) {
         this.player = player
-
         this.isAnimating = false
 
+        this.init()
+    }
+
+    init() {
         this._animate = this._animate.bind(this)
         this._animate()
+    }
+
+    deinit() {
+        if (this._animationToken !== undefined)
+            cancelAnimationFrame(this._animationToken)
     }
 
     _animate() {
@@ -26,7 +34,7 @@ export default class AnimationManager {
             }
         }
 
-        requestAnimationFrame(this._animate)
+        this._animationToken = requestAnimationFrame(this._animate)
     }
 
     animateTo(n, duration = 1000) {

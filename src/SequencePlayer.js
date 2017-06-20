@@ -3,10 +3,13 @@ import 'promise-polyfill'
 import 'whatwg-fetch'
 import './styles/sequence-player.css'
 import AnimationManager from './AnimationManager'
+import InteractionManager from './InteractionManager'
 
 export default class SequencePlayer {
     constructor (el, srcPattern, options) {
-        this._el = el
+        this.el = el
+        this.srcPattern = srcPattern
+
         this._options = Object.assign({}, this.defaultOptions, options)
         this._currentFrame = 0
         this._isAnimating = false
@@ -14,9 +17,8 @@ export default class SequencePlayer {
 
         this._setupDOM()
 
-        this.srcPattern = srcPattern
-        
         this.animationManager = new AnimationManager(this)
+        this.InteractionManager = new InteractionManager(this)
     }
 
     get defaultOptions() {
@@ -48,12 +50,12 @@ export default class SequencePlayer {
     }
 
     _setupDOM() {
-        this._el.classList.add('sequence-player')
-        this._el.style.paddingTop = (1 / this._options.aspectRatio) * 100 + '%'
+        this.el.classList.add('sequence-player')
+        this.el.style.paddingTop = (1 / this._options.aspectRatio) * 100 + '%'
 
         this._imageContainer = document.createElement('div')
         this._imageContainer.classList.add('sequence-player__image')
-        this._el.appendChild(this._imageContainer)
+        this.el.appendChild(this._imageContainer)
     }
 
     _loadImages(images) {
