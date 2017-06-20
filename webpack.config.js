@@ -10,7 +10,6 @@ module.exports = {
         rules: [
             {
                 test:       /\.js$/,
-                exclude:    /(node_modules|bower_components)/,
                 use:        { loader: 'babel-loader', options: { presets: [ 'env' ] } },
             },
             {
@@ -24,6 +23,5 @@ module.exports = {
         overlay: true,
         port: 9000,
         publicPath: "/dist",
-        open: true,
     },
 };

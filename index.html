@@ -18,9 +18,9 @@
 
     <script src="dist/bundle.js"></script>
     <script>
-        console.time('build ranges')
-        var sp = new SequencePlayer(seq1, "static/images/[0..4].jpg")
-        console.timeEnd('build ranges')
+        var sp = new SequencePlayer(seq1, "static/images/[0..4].jpg", {
+            aspectRatio: 16/9,
+        })
         
 
         // regex: 600 - 6~8ms
