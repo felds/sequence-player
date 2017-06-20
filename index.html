@@ -7,8 +7,8 @@
 
     <title>Sequence player</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">#}
 </head>
 
 <body>
@@ -18,7 +18,15 @@
 
     <script src="dist/bundle.js"></script>
     <script>
-        var sp = new SequencePlayer(seq1, "static/images/[1..6].jpg")
+        console.time('build ranges')
+        var sp = new SequencePlayer(seq1, "static/images/[0..4].jpg")
+        console.timeEnd('build ranges')
+        
+
+        // regex: 600 - 6~8ms
+        // regex: 10000 - 133~300ms
+
+        // slice: 10000 - 300ms
     </script>
 </body>
 

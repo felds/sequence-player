@@ -1,8 +1,8 @@
-import expandUrlRange from './utils/expand-url-range.js'
+import strExpand from 'str-expand'
 
 class SequencePlayer {
     constructor (el, range) {
-        this._images = expandUrlRange(range)
+        this._images = strExpand(range)
 
         console.log(this._images)
     }

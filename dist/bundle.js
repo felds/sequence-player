@@ -65,69 +65,56 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 35:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = expandUrlRange;
 // @TODO Padded ranges
 // @TODO decrement
 // @TODO alpha ranges
 // @TODO steps
 
+const concat = (x,y) => x.concat(y)
+const fmap = (f,xs) => xs.map(f).reduce(concat, [])
 
-var concat = function concat(x, y) {
-    return x.concat(y);
-};
-var fmap = function fmap(f, xs) {
-    return xs.map(f).reduce(concat, []);
-};
-
-Array.prototype.fmap = function (f) {
-    return fmap(f, this);
+Array.prototype.fmap = function(f) {
+  return fmap(f,this);
 };
 
-var arrayRange = function arrayRange(from, to) {
-    return new Array(to - from + 1).fill(0).map(function (_, i) {
-        return parseInt(from) + i;
-    });
-};
+const arrayRange = (from, to) => new Array(to - from + 1)
+    .fill(0)
+    .map((_, i) => parseInt(from) + i)
 
-function expandUrlRange(pattern) {
+function strExpand(pattern) {
+    if (pattern === '') {
+        return []
+    }
+
     // detect braces
     // https://regex101.com/r/NUZ0mY/2
-    var bracesRegex = /\{([^\}]*?)\}/;
-    var bracesMatch = bracesRegex.exec(pattern);
+    const bracesRegex = /\{([^\}]*?)\}/
+    const bracesMatch = bracesRegex.exec(pattern)
     if (bracesMatch) {
-        var vals = bracesMatch[1].split(',');
-        return vals.map(function (v) {
-            return pattern.replace(bracesRegex, v);
-        }).fmap(function (s) {
-            return expandUrlRange(s);
-        });
+        const vals = bracesMatch[1].split(',')
+        return vals
+            .map(v => pattern.replace(bracesRegex, v))
+            .fmap(s => strExpand(s))
     }
 
     // https://regex101.com/r/NUZ0mY/3
-    var bracketsRegex = /\[(\d+)\.\.(\d+)\]/;
-    var bracketsMatch = bracketsRegex.exec(pattern);
+    const bracketsRegex = /\[(\d+)\.\.(\d+)\]/
+    const bracketsMatch = bracketsRegex.exec(pattern)
     if (bracketsMatch) {
-        var from = bracketsMatch[1],
-            to = bracketsMatch[2];
-
-        return arrayRange(from, to).map(function (v) {
-            return pattern.replace(bracketsRegex, v);
-        }).fmap(function (s) {
-            return expandUrlRange(s);
-        });
+        const { 1: from, 2: to } = bracketsMatch
+        return arrayRange(from, to)
+            .map(v => pattern.replace(bracketsRegex, v))
+            .fmap(s => strExpand(s))
     }
-
-    return [pattern];
+    
+    return [ pattern ]
 }
+
+module.exports = strExpand
+
 
 /***/ }),
 
@@ -137,9 +124,9 @@ function expandUrlRange(pattern) {
 "use strict";
 
 
-var _expandUrlRange = __webpack_require__(10);
+var _strExpand = __webpack_require__(35);
 
-var _expandUrlRange2 = _interopRequireDefault(_expandUrlRange);
+var _strExpand2 = _interopRequireDefault(_strExpand);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -148,7 +135,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var SequencePlayer = function SequencePlayer(el, range) {
     _classCallCheck(this, SequencePlayer);
 
-    this._images = (0, _expandUrlRange2.default)(range);
+    this._images = (0, _strExpand2.default)(range);
 
     console.log(this._images);
 };
