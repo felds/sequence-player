@@ -42,9 +42,11 @@ export default class InteractionManager {
 
     _startDrag(pos) {
         this.isDragging = true
-
+        
         this._startPos = pos
         this._startFrame = this.player.currentFrame
+
+        if (typeof this.onstartdrag === 'function') this.onstartdrag(this)
     }
 
     _drag(pos) {
@@ -55,10 +57,14 @@ export default class InteractionManager {
         const targetFrame = this._startFrame - Math.floor((pos - this._startPos) * this.sensitivity)
         
         this.player.currentFrame = normalize(playerFrames - this.loopingFrame, targetFrame - this.loopingFrame) + this.loopingFrame
+
+        if (typeof this.ondrag === 'function') this.ondrag(this)
     }
     
     _stopDrag() {
         this.isDragging = false
+
+        if (typeof this.onstopdrag === 'function') this.onstopdrag(this)
     }
 
     _handleMouseDown(e) {

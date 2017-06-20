@@ -18,7 +18,14 @@ export default class SequencePlayer {
         this._setupDOM()
 
         this.animationManager = new AnimationManager(this)
-        this.InteractionManager = new InteractionManager(this, this._options.loopingFrame)
+        this.interactionManager = new InteractionManager(this, this._options.loopingFrame)
+
+        this.interactionManager.onstartdrag = _ => {
+            this.el.classList.add('sequence-player--dragging')
+        }
+        this.interactionManager.onstopdrag = _ => {
+            this.el.classList.remove('sequence-player--dragging')
+        }
     }
 
     get defaultOptions() {
