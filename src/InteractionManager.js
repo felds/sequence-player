@@ -52,7 +52,7 @@ export default class InteractionManager {
     _drag(pos) {
         if (!this.isDragging) return
         
-        if (this._prevPos) {
+        if (this._prevPos && !this.player.isAnimating) {
             const delta = (pos - this._prevPos) * this.sensitivity
             const spin  = normalize(this.player.images.length - this.loopingFrame, this.player.currentFrame - this.loopingFrame + delta) 
 
