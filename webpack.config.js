@@ -10,7 +10,7 @@ module.exports = {
         rules: [
             {
                 test:       /\.js$/,
-                use:        { loader: 'babel-loader', options: { presets: [ 'env' ] } },
+                use:        { loader: 'babel-loader', options: { presets: [ 'env', 'stage-0' ] } },
             },
             {
                 test:       /\.css$/,
@@ -23,5 +23,6 @@ module.exports = {
         overlay: true,
         port: 9000,
         publicPath: "/dist",
+        host: '10.0.12.33'
     },
 };

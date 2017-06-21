@@ -1,5 +1,5 @@
 import strExpand from 'str-expand'
-import 'promise-polyfill'
+import Promise from 'promise-polyfill'
 import 'whatwg-fetch'
 import './styles/sequence-player.css'
 import AnimationManager from './AnimationManager'
@@ -10,7 +10,7 @@ export default class SequencePlayer {
         this.el = el
         this.srcPattern = srcPattern
 
-        this._options = Object.assign({}, this.defaultOptions, options)
+        this._options = { ...this.defaultOptions, ...options }
         this._currentFrame = 0
         this._isAnimating = false
         this._images = []
@@ -73,7 +73,10 @@ export default class SequencePlayer {
     _loadImages(images) {
         const loaders = images.map(path => new Promise((resolve, reject) => {
             const image = new Image()
-            image.onload = _ => resolve(image)
+            image.onload = _ => {
+                console.log(`loaded image ${path}`)
+                resolve(image)
+            }
             image.onerror = e => reject(e)
             image.src = path
         }))
