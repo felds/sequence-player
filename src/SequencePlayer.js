@@ -18,7 +18,7 @@ export default class SequencePlayer {
     constructor (el, srcPattern, options) {
         this.el = el
         this.srcPattern = srcPattern
-
+        
         this.options = { ...this.defaultOptions, ...options }
         this.images = []
 
@@ -65,6 +65,11 @@ export default class SequencePlayer {
     set currentFrame(n) {
         if (n < this.images.length)
             this._currentFrame = n
+    }
+
+
+    get isAnimating() {
+        return this.animationManager.isAnimating
     }
 
     
