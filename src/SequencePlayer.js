@@ -1,9 +1,8 @@
-import strExpand from 'str-expand'
 import Promise from 'promise-polyfill'
-import './styles/sequence-player.css'
+import strExpand from 'str-expand'
 import AnimationManager from './AnimationManager'
 import InteractionManager from './InteractionManager'
-import { throttle, debounce } from 'lodash/fp'
+import './styles/sequence-player.css'
 
 const createImageLoaderPromise = path =>
     new Promise((resolve, reject) => {
@@ -15,8 +14,6 @@ const createImageLoaderPromise = path =>
     })
 
 
-
-
 export default class SequencePlayer {
     constructor (el, srcPattern, options) {
         this.el = el
@@ -26,7 +23,7 @@ export default class SequencePlayer {
         this.images = []
 
 
-        // this.animationManager = new AnimationManager(this)
+        this.animationManager = new AnimationManager(this)
 
 
         this.interactionManager = new InteractionManager(this, this.options.loopingFrame)
@@ -37,8 +34,8 @@ export default class SequencePlayer {
             this.el.classList.remove('sequence-player--dragging')
         }
 
-        this._draw = this._draw.bind(this)
 
+        this._draw = this._draw.bind(this)
         this.init()
     }
 
@@ -123,4 +120,9 @@ export default class SequencePlayer {
                 }
             })
     }
+
+    animateTo(n, duration, easing) {
+        this.animationManager.animateTo(n, duration, easing)
+    }
+
 }
