@@ -1,5 +1,6 @@
 import { normalize } from './utils/math'
 
+
 export default class InteractionManager {
     constructor (player, loopingFrame = 0) {
         this.player         = player
@@ -36,33 +37,37 @@ export default class InteractionManager {
     }
 
     get sensitivity() {
-        // @XXX but why?!
-        return 200 / this.player.el.offsetWidth
+        return -200 / this.player.el.offsetWidth
     }
 
     _startDrag(pos) {
         this.isDragging = true
-        
-        this._startPos = pos
-        this._startFrame = this.player.currentFrame
 
         if (typeof this.onstartdrag === 'function') this.onstartdrag(this)
     }
 
+    /**
+     * @TODO check if its animating
+     */
     _drag(pos) {
-        // @TODO check if its animating
         if (!this.isDragging) return
         
-        const playerFrames = this.player.length
-        const targetFrame = this._startFrame - Math.floor((pos - this._startPos) * this.sensitivity)
-        
-        this.player.currentFrame = normalize(playerFrames - this.loopingFrame, targetFrame - this.loopingFrame) + this.loopingFrame
+        if (this._prevPos) {
+            const delta = (pos - this._prevPos) * this.sensitivity
+            const spin  = normalize(this.player.images.length - this.loopingFrame, this.player.currentFrame - this.loopingFrame + delta) 
 
+            this.player.currentFrame = this.loopingFrame + spin
+        }
+
+        this._prevPos = pos
+        
         if (typeof this.ondrag === 'function') this.ondrag(this)
     }
     
     _stopDrag() {
         this.isDragging = false
+
+        this._prevPos = undefined
 
         if (typeof this.onstopdrag === 'function') this.onstopdrag(this)
     }

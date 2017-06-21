@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open-page . && npm build",
+    "start": "webpack-dev-server --open-page .",
     "build": "webpack -p"
   },
   "repository": {

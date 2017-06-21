@@ -1,32 +1,56 @@
 import strExpand from 'str-expand'
 import Promise from 'promise-polyfill'
-import 'whatwg-fetch'
 import './styles/sequence-player.css'
 import AnimationManager from './AnimationManager'
 import InteractionManager from './InteractionManager'
+import { throttle, debounce } from 'lodash/fp'
+
+const createImageLoaderPromise = path =>
+    new Promise((resolve, reject) => {
+        const image = new Image()
+
+        image.onload    = e => resolve(image)
+        image.onerror   = e => reject(e)
+        image.src       = path
+    })
+
+
+
 
 export default class SequencePlayer {
     constructor (el, srcPattern, options) {
         this.el = el
         this.srcPattern = srcPattern
 
-        this._options = { ...this.defaultOptions, ...options }
-        this._currentFrame = 0
-        this._isAnimating = false
-        this._images = []
+        this.options = { ...this.defaultOptions, ...options }
+        this.images = []
 
-        this._setupDOM()
 
-        this.animationManager = new AnimationManager(this)
-        this.interactionManager = new InteractionManager(this, this._options.loopingFrame)
+        // this.animationManager = new AnimationManager(this)
 
+
+        this.interactionManager = new InteractionManager(this, this.options.loopingFrame)
         this.interactionManager.onstartdrag = _ => {
             this.el.classList.add('sequence-player--dragging')
         }
         this.interactionManager.onstopdrag = _ => {
             this.el.classList.remove('sequence-player--dragging')
         }
+
+        this._draw = this._draw.bind(this)
+
+        this.init()
     }
+
+
+    init() {
+        this._setupDOM()
+        this._draw()
+    }
+    deinit() {
+
+    }
+
 
     get defaultOptions() {
         return {
@@ -37,67 +61,66 @@ export default class SequencePlayer {
         }
     }
 
+
     get currentFrame() {
-        return this._currentFrame
+        return this._currentFrame || 0
     }
-
-    get length() {
-        return this._images.length
-    }
-
     set currentFrame(n) {
-        // validate if frame exists
-        if (this._images[n] === undefined)
-            return
-            // throw `Invalid frame “${n}”`
-        
-        this._currentFrame = n
-        this._imageContainer.style.backgroundImage = `url(${this._images[n].src})`
+        if (n < this.images.length)
+            this._currentFrame = n
     }
 
+    
     set srcPattern(srcPattern) {
         this._range = srcPattern
 
         this._loadImages(strExpand(srcPattern))
     }
 
+
+    _draw() {
+        const w     = this.el.offsetWidth * (window.devicePixelRatio || 1)
+        const h     = this.el.offsetHeight * (window.devicePixelRatio || 1)
+        const ctx   = this._imageContainer.getContext('2d')
+
+        this._imageContainer.width  = w
+        this._imageContainer.height = h
+
+        const frame = Math.floor(this.currentFrame)
+        const image = this.images[frame]
+
+        if (image) {
+            ctx.drawImage(image, 0, 0, w, h)
+        }
+
+        requestAnimationFrame(this._draw)
+    }
+
+
     _setupDOM() {
         this.el.classList.add('sequence-player')
-        this.el.style.paddingTop = (1 / this._options.aspectRatio) * 100 + '%'
+        this.el.style.paddingTop = (1 / this.options.aspectRatio) * 100 + '%'
 
-        this._imageContainer = document.createElement('div')
+        this._imageContainer = document.createElement('canvas')
         this._imageContainer.classList.add('sequence-player__image')
         this.el.appendChild(this._imageContainer)
     }
 
-    _loadImages(images) {
-        const loaders = images.map(path => new Promise((resolve, reject) => {
-            const image = new Image()
-            image.onload = _ => {
-                console.log(`loaded image ${path}`)
-                resolve(image)
-            }
-            image.onerror = e => reject(e)
-            image.src = path
-        }))
 
-        Promise.all(loaders)
+    _loadImages(images) {
+        Promise.all(images.map(createImageLoaderPromise))
             .then(success => {
-                this._images = success
+                this.images = success
                 this.currentFrame = 0
 
-                if (typeof this._options.imagesLoadedCallback === 'function') {
-                    this._options.imagesLoadedCallback(this)
+                if (typeof this.options.imagesLoadedCallback === 'function') {
+                    this.options.imagesLoadedCallback(this)
                 }
             })
             .catch(fail => {
-                if (typeof this._options.imagesFailedLoadingCallback === 'function') {
-                    this._options.imagesFailedLoadingCallback(this)
+                if (typeof this.options.imagesFailedLoadingCallback === 'function') {
+                    this.options.imagesFailedLoadingCallback(this)
                 }
             })
-    }
-
-    animateTo(n, duration, easing) {
-        this.animationManager.animateTo(n, duration, easing)
     }
 }
