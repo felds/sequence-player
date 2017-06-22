@@ -1,3 +1,3 @@
-import SequencePlayer from './SequencePlayer'
+import SequencePlayer from './SequencePlayer/SequencePlayer'
 
 window.SequencePlayer = SequencePlayer

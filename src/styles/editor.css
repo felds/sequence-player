@@ -1,0 +1,18 @@
+.editor__overlay {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background-color: rgba(50, 50, 50, .1);
+    z-index: 99;
+    cursor: crosshair;
+}
+.editor__feature {
+    position: absolute;
+    left: 0; top: 0;
+    width: 12px; height: 12px;
+    margin: -6px;
+    border-radius: 50%;
+    background: gold;
+    pointer-events: none;
+}

@@ -1,9 +1,12 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        bundle: './src/index.js',
+        editor: './src/editor.js',
+    },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist')
     },
     module: {
@@ -23,6 +26,6 @@ module.exports = {
         overlay: true,
         port: 9000,
         publicPath: "/dist",
-        host: '10.0.12.33'
+        host: '10.0.12.33',
     },
 };

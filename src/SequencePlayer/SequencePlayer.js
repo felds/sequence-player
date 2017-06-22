@@ -3,7 +3,7 @@ import strExpand from 'str-expand'
 import AnimationManager from './AnimationManager'
 import InteractionManager from './InteractionManager'
 import FeaturesManager from './FeaturesManager'
-import './styles/sequence-player.css'
+import '../styles/sequence-player.css'
 
 const createImageLoaderPromise = path =>
     new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
 import { last, head } from 'lodash/fp'
-import { map } from './utils/math'
+import { map } from '../utils/math'
 
 
 const withAnchors = player => f => {
@@ -22,7 +22,7 @@ const withAnchors = player => f => {
 const timeToFrame = fps => t => Math.round(fps * t)
 const timesToFrames = fps => f => {
     const converter = timeToFrame(fps)
-    const waypoints = f.waypoints.map(w => [ converter(w[0]), ...w.slice(1) ])
+    const waypoints = f.waypoints.map(w => [ w[0], ...w.slice(1) ])
     const targetPosition = converter(f.targetPosition)
 
     return { ...f, waypoints, targetPosition }
@@ -44,6 +44,11 @@ export default class FeaturesManager {
     }
     deinit() {
         if (this._drawToken) cancelAnimationFrame(this._drawToken)
+        
+        // remove anchors
+        this.features.forEach(f => {
+            f.anchor.parentNode.removeChild(f.anchor)
+        })
     }
 
 

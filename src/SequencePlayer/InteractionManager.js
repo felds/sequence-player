@@ -1,4 +1,4 @@
-import { normalize } from './utils/math'
+import { normalize } from '../utils/math'
 
 
 export default class InteractionManager {

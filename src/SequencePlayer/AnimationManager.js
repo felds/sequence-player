@@ -1,5 +1,5 @@
 import eases from 'eases'
-import { map } from './utils/math'
+import { map } from '../utils/math'
 
 export default class AnimationManager {
     constructor(player) {
