@@ -19,7 +19,7 @@ const withAnchors = player => f => {
 }
 
 
-const timeToFrame = fps => t => Math.floor(fps * t)
+const timeToFrame = fps => t => Math.round(fps * t)
 const timesToFrames = fps => f => {
     const converter = timeToFrame(fps)
     const waypoints = f.waypoints.map(w => [ converter(w[0]), ...w.slice(1) ])
@@ -70,6 +70,7 @@ export default class FeaturesManager {
     _draw() {
         const t = this.player.currentFrame
 
+        // move anchors
         this.features.forEach(f => {
             const w_before  = last(f.waypoints.filter(w => w[0] <= t))
             const w_after   = head(f.waypoints.filter(w => w[0] > t))

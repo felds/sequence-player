@@ -39,7 +39,11 @@ export default class SequencePlayer {
         this.featuresManager = new FeaturesManager(this, this.options.features)
 
 
-        this._draw = this._draw.bind(this)
+        this._draw          = this._draw.bind(this)
+        this.showOverlays   = this.showOverlays.bind(this)
+        this.hideOverlays   = this.hideOverlays.bind(this)
+
+
         this.init()
     }
 
@@ -58,6 +62,9 @@ export default class SequencePlayer {
             aspectRatio: 1,
             imagesLoadedCallback: undefined,
             imagesFailedLoadingCallback: undefined,
+            hideOverlaysCallback: undefined,
+            showOverlaysCallback: undefined,
+            overlaysHiddenInterval: 500,
             loopingFrame: 0,
             features: [],
         }
@@ -68,8 +75,14 @@ export default class SequencePlayer {
         return this._currentFrame || 0
     }
     set currentFrame(n) {
+        const prevFrame = this._currentFrame
+
         if (n < this.images.length)
             this._currentFrame = n
+
+        console.log(prevFrame)
+        if (prevFrame !== this.currentFrame)
+            this.hideOverlays()
     }
 
 
@@ -134,5 +147,26 @@ export default class SequencePlayer {
     animateTo(n, duration, easing) {
         this.animationManager.animateTo(n, duration, easing)
     }
+
+    hideOverlays() {
+        if (this._hideOverlaysTimeoutToken) clearTimeout(this._hideOverlaysTimeoutToken)
+
+        this.el.classList.add('sequence-player--hide-overlays')
+        this._hideOverlaysTimeoutToken = setTimeout(this.showOverlays, this.options.overlaysHiddenInterval)
+
+        if (typeof this.options.hideOverlaysCallback === 'function')
+            this.options.hideOverlaysCallback.onShowOverlays(this)
+    }
+
+    showOverlays() {
+        if (this._hideOverlaysTimeoutToken)
+            clearTimeout(this._hideOverlaysTimeoutToken)
+
+        this.el.classList.remove('sequence-player--hide-overlays')
+
+        if (typeof this.options.showOverlaysCallback === 'function')
+            this.options.showOverlaysCallback(this)
+    }
+
 
 }

@@ -26,7 +26,7 @@ export default class AnimationManager {
             const delta = map(Date.now(), this._animateStart, this._animateEnd,
                 0, 1)
             const eased = easing(delta)
-            const frame = Math.floor(map(eased, 0, 1, this._animateFrom, this._animateTo))
+            const frame = map(eased, 0, 1, this._animateFrom, this._animateTo)
             
             this.player.currentFrame = frame
 

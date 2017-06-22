@@ -23,6 +23,9 @@
     width: 100%; height: 100%;
     background: rgba(0, 200, 200, .4);
     z-index: 1;
+    /* animation */
+    opacity: 1;
+    transition: opacity 200ms;
 }
 
 .sequence-player__anchor {
@@ -33,4 +36,10 @@
     display: inline-block;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, .5);
+}
+
+
+.sequence-player--hide-overlays .sequence-player__features {
+    opacity: 0;
+    transition: opacity 50ms;
 }
