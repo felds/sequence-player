@@ -2,6 +2,7 @@ import Promise from 'promise-polyfill'
 import strExpand from 'str-expand'
 import AnimationManager from './AnimationManager'
 import InteractionManager from './InteractionManager'
+import FeaturesManager from './FeaturesManager'
 import './styles/sequence-player.css'
 
 const createImageLoaderPromise = path =>
@@ -15,7 +16,7 @@ const createImageLoaderPromise = path =>
 
 
 export default class SequencePlayer {
-    constructor (el, srcPattern, options) {
+    constructor(el, srcPattern, options) {
         this.el = el
         this.srcPattern = srcPattern
         
@@ -33,6 +34,9 @@ export default class SequencePlayer {
         this.interactionManager.onstopdrag = _ => {
             this.el.classList.remove('sequence-player--dragging')
         }
+
+
+        this.featuresManager = new FeaturesManager(this, this.options.features)
 
 
         this._draw = this._draw.bind(this)
@@ -55,6 +59,7 @@ export default class SequencePlayer {
             imagesLoadedCallback: undefined,
             imagesFailedLoadingCallback: undefined,
             loopingFrame: 0,
+            features: [],
         }
     }
 
