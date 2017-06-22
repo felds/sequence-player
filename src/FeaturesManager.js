@@ -7,9 +7,12 @@ const withAnchors = player => f => {
     anchor.title = f.title
     anchor.href = `#${f.targetPosition}`
     anchor.classList.add('sequence-player__anchor')
-    anchor.addEventListener('click',e => {
-        e.stopPropagation()
+    anchor.addEventListener('click', e => {
+        e.preventDefault()
         player.animateTo(f.targetPosition)
+    })
+    anchor.addEventListener('mousedown', e => {
+        e.preventDefault()
     })
 
     return { ...f, anchor }
