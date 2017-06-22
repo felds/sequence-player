@@ -59,14 +59,14 @@ export default class SequencePlayer {
 
     get defaultOptions() {
         return {
-            aspectRatio: 1,
-            imagesLoadedCallback: undefined,
-            imagesFailedLoadingCallback: undefined,
-            hideOverlaysCallback: undefined,
-            showOverlaysCallback: undefined,
-            overlaysHiddenInterval: 500,
-            loopingFrame: 0,
-            features: [],
+            aspectRatio:                    1,
+            imagesLoadedCallback:           undefined,
+            imagesFailedLoadingCallback:    undefined,
+            hideOverlaysCallback:           undefined,
+            showOverlaysCallback:           undefined,
+            overlaysHiddenInterval:         500,
+            loopingFrame:                   0,
+            features:                       [],
         }
     }
 
@@ -80,7 +80,6 @@ export default class SequencePlayer {
         if (n < this.images.length)
             this._currentFrame = n
 
-        console.log(prevFrame)
         if (prevFrame !== this.currentFrame)
             this.hideOverlays()
     }

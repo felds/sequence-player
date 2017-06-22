@@ -42,10 +42,14 @@ export default class AnimationManager {
     animateTo(n, duration = 1000, easing = "quadInOut") {
         this._animateFrom   = this.player.currentFrame
         this._animateTo     = n
+
+        const minDuration   = Math.abs(this._animateFrom - this._animateTo) * 50
+
         this._animateStart  = Date.now()
-        this._animateEnd    = Date.now() + duration
+        this._animateEnd    = Date.now() + Math.min(duration, minDuration)
         this._easing        = easing
         
+        console.log(this._animateFrom, this._animateTo)
         this.isAnimating     = true
     }
 
