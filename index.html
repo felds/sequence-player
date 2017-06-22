@@ -14,7 +14,14 @@
 <body>
     <div class="container">
         <div id="seq1"></div>
+
+        <hr>
+
+        <p>
+            <a href="#close" id="gobackinside" class="btn btn-primary">Go back inside</a>
+        </p>
     </div>
+
 
     <script src="dist/bundle.js"></script>
     <script>
@@ -111,15 +118,18 @@
             },
         ]
 
-
-
-        var sp = new SequencePlayer(seq1, "static/images/img-[1..302].jpg", {
-            aspectRatio: 16/9,
+        var sp = new SequencePlayer(seq1, "static/30fps/[1..300].jpg", {
+            aspectRatio: 1920 / 925,
             imagesLoadedCallback: function () {
-                sp.animateTo(187, 5000, "quadOut")
+                sp.animateTo(187, undefined, "quadOut")
             },
             loopingFrame: 77,
             features: features,
+        })
+
+        gobackinside.addEventListener('click', function (e) {
+            e.preventDefault()
+            sp.animateTo(0, undefined, "quadIn")
         })
     </script>
 </body>

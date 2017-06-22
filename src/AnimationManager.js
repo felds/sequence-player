@@ -39,11 +39,13 @@ export default class AnimationManager {
         this._animationToken = requestAnimationFrame(this._animate)
     }
 
-    animateTo(n, duration = 1000, easing = "quadInOut") {
+    animateTo(n, duration = undefined, easing = "quadInOut") {
         this._animateFrom   = this.player.currentFrame
         this._animateTo     = n
 
-        const minDuration   = Math.abs(this._animateFrom - this._animateTo) * 50
+        const minDuration   = Math.abs(this._animateFrom - this._animateTo) * 20
+        if (duration === undefined)
+            duration = minDuration
 
         this._animateStart  = Date.now()
         this._animateEnd    = Date.now() + Math.min(duration, minDuration)
