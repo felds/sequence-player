@@ -49,7 +49,6 @@ export default class AnimationManager {
         this._animateEnd    = Date.now() + Math.min(duration, minDuration)
         this._easing        = easing
         
-        console.log(this._animateFrom, this._animateTo)
         this.isAnimating     = true
     }
 
