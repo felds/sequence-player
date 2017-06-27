@@ -19,16 +19,6 @@ const withAnchors = player => f => {
 }
 
 
-// const timeToFrame = fps => t => Math.round(fps * t)
-// const timesToFrames = fps => f => {
-//     // const converter = timeToFrame(fps)
-//     const waypoints = f.waypoints.map(w => [ w[0], ...w.slice(1) ])
-//     const targetPosition = f.targetPosition
-
-//     return { ...f, waypoints, targetPosition }
-// }
-
-
 export default class FeaturesManager {
     constructor(player, features) {
         this.player     = player
