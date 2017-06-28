@@ -24,8 +24,8 @@ module.exports = {
     devServer: {
         inline: true,
         overlay: true,
-        port: 9000,
         publicPath: "/dist",
-        host: '10.0.12.33',
+        host: process.env.HOST || '0.0.0.0',
+        port: process.env.PORT || 9000,
     },
 };
